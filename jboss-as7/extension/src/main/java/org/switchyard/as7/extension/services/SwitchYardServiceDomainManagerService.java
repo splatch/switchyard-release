@@ -19,11 +19,15 @@
 
 package org.switchyard.as7.extension.services;
 
+import org.infinispan.Cache;
 import org.jboss.msc.service.Service;
 import org.jboss.msc.service.ServiceName;
 import org.jboss.msc.service.StartContext;
 import org.jboss.msc.service.StartException;
 import org.jboss.msc.service.StopContext;
+import org.jboss.msc.value.InjectedValue;
+import org.switchyard.as7.extension.cluster.DistributedServiceRegistry;
+import org.switchyard.as7.extension.cluster.RemoteEndpointListener;
 import org.switchyard.deploy.ServiceDomainManager;
 
 /**
@@ -38,18 +42,62 @@ public class SwitchYardServiceDomainManagerService implements Service<ServiceDom
      */
     public final static ServiceName SERVICE_NAME = ServiceName.of(SwitchYardServiceDomainManagerService.class.getSimpleName());
 
-    private ServiceDomainManager _domainManager = new ServiceDomainManager();
+    private ServiceDomainManager _domainManager;
+
+    private final InjectedValue<Cache> _cache = new InjectedValue<Cache>();
+
+    // remove this!
+    DistributedServiceRegistry registry;
+    RemoteEndpointListener endpoint;
 
     @Override
     public void start(StartContext startContext) throws StartException {
+        final String instanceId = "instance:" + System.currentTimeMillis();
+        
+        // If clustering is enabled and we found a cache, then go with a distributed
+        // registry.  Otherwise, go with the default (local) registry.
+        if (_cache.getOptionalValue() != null) {
+            endpoint = new RemoteEndpointListener("switchyard-remote", _domainManager);
+            registry = new DistributedServiceRegistry(_cache.getValue(), endpoint.getAddress());
+            _domainManager = new ServiceDomainManager(registry);
+            try {
+                endpoint.start();
+            } catch (Exception ex) {
+                throw new StartException(ex);
+            }
+            
+        } else {
+            _domainManager = new ServiceDomainManager();
+        }
+        
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                do {
+                    System.out.println("############# " + instanceId + " *############");
+                    for (Object name : _cache.getValue().keySet()) {
+                        System.out.println("Service " + name + " is available at " + _cache.getValue().get(name));
+                    }
+                    try {
+                        Thread.sleep(15000);
+                    } catch (Exception ex) {}
+                } while (true);
+            }
+        }).start();
     }
 
     @Override
     public void stop(StopContext stopContext) {
+        endpoint.stop();    
     }
 
     @Override
     public ServiceDomainManager getValue() throws IllegalStateException, IllegalArgumentException {
         return _domainManager;
+    }
+    
+    public InjectedValue<Cache> getCache() {
+        return _cache;
     }
 }
