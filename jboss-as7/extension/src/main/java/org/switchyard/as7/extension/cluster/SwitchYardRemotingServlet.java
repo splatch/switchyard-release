@@ -68,7 +68,6 @@ public class SwitchYardRemotingServlet extends HttpServlet {
         RemoteMessage msg = _serializer.deserialize(request.getInputStream(), RemoteMessage.class);
         System.out.println("message content -> " + msg.getContent());
         
-        try {
         ServiceDomain domain = _domainManager.getDomain(msg.getDomain());
         ServiceReference service = domain.getServiceReference(msg.getService());
         Exchange ex = service.createExchange();
@@ -76,9 +75,6 @@ public class SwitchYardRemotingServlet extends HttpServlet {
         ex.getContext().setProperties(msg.getContext().getProperties());
         m.setContent(msg.getContent());
         ex.send(m);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
     
     public void setServiceDomainManager(ServiceDomainManager domainManager) {

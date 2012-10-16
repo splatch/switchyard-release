@@ -26,21 +26,23 @@ import java.net.URL;
 import org.switchyard.BaseHandler;
 import org.switchyard.Exchange;
 import org.switchyard.HandlerException;
-import org.switchyard.internal.DefaultMessage;
 import org.switchyard.internal.io.JSONProtostuffSerializer;
 import org.switchyard.internal.io.Serializer;
 
 public class ClusteredServiceHandler extends BaseHandler {
     
+    private ServiceEndpoint _service;
     private URL _endpoint;
     private Serializer _serializer;
 
-    public ClusteredServiceHandler(String address) {
+    public ClusteredServiceHandler(ServiceEndpoint service) {
         _serializer = new JSONProtostuffSerializer();
+        _service = service;
         try {
-            _endpoint = new URL(address);
+            _endpoint = new URL(service.getEndpoint());
         } catch (MalformedURLException badURL) {
-            throw new IllegalArgumentException("Invalid URL for remote endpoint: " + address, badURL);
+            throw new IllegalArgumentException(
+                    "Invalid URL for remote endpoint: " + service.getEndpoint(), badURL);
         }
     }
     
@@ -54,6 +56,7 @@ public class ClusteredServiceHandler extends BaseHandler {
             OutputStream os = conn.getOutputStream();
             RemoteMessage msg = new RemoteMessage()
                 //.setDomain(exchange.getProvider().getDomain().getName())
+                .setDomain(_service.getDomainName())
                 .setService(exchange.getProvider().getName())
                 .setContent(exchange.getMessage().getContent())
                 .setContext(exchange.getContext());

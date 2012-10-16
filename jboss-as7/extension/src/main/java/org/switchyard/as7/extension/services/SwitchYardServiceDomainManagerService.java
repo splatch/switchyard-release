@@ -57,9 +57,10 @@ public class SwitchYardServiceDomainManagerService implements Service<ServiceDom
         // If clustering is enabled and we found a cache, then go with a distributed
         // registry.  Otherwise, go with the default (local) registry.
         if (_cache.getOptionalValue() != null) {
-            endpoint = new RemoteEndpointListener("switchyard-remote", _domainManager);
+            endpoint = new RemoteEndpointListener("switchyard-remote");
             registry = new DistributedServiceRegistry(_cache.getValue(), endpoint.getAddress());
             _domainManager = new ServiceDomainManager(registry);
+            endpoint.setDomainManager(_domainManager);
             try {
                 endpoint.start();
             } catch (Exception ex) {
@@ -80,7 +81,7 @@ public class SwitchYardServiceDomainManagerService implements Service<ServiceDom
                         System.out.println("Service " + name + " is available at " + _cache.getValue().get(name));
                     }
                     try {
-                        Thread.sleep(15000);
+                        Thread.sleep(45000);
                     } catch (Exception ex) {}
                 } while (true);
             }

@@ -52,8 +52,11 @@ public class RemoteEndpointListener {
     private StandardContext _serverContext;
     private ServiceDomainManager _domainManager;
     
-    public RemoteEndpointListener(String context, ServiceDomainManager domainManager) {
+    public RemoteEndpointListener(String context) {
         _contextName = context;
+    }
+    
+    public void setDomainManager(ServiceDomainManager domainManager) {
         _domainManager = domainManager;
     }
 

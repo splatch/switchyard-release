@@ -18,7 +18,6 @@
  */
 package org.switchyard.as7.extension.cluster;
 
-import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -96,7 +95,7 @@ public class DistributedServiceRegistry implements ServiceRegistry {
                 try {
                     ServiceEndpoint ep = _serializer.deserialize(remote.getBytes(), ServiceEndpoint.class);
                     if (!_localAddress.equals(ep.getEndpoint())) {
-                        ExchangeHandler handler = new ClusteredServiceHandler(ep.getEndpoint());
+                        ExchangeHandler handler = new ClusteredServiceHandler(ep);
                         services.add(new ServiceImpl(ep.getServiceName(), ep.getContract(), null, handler));
                     }
                 } catch (java.io.IOException ioEx) {
