@@ -31,7 +31,9 @@ import org.switchyard.Exchange;
 import org.switchyard.Message;
 import org.switchyard.ServiceDomain;
 import org.switchyard.ServiceReference;
+import org.switchyard.common.type.Classes;
 import org.switchyard.deploy.ServiceDomainManager;
+import org.switchyard.deploy.internal.Deployment;
 import org.switchyard.internal.io.JSONProtostuffSerializer;
 import org.switchyard.internal.io.Serializer;
 
@@ -69,12 +71,18 @@ public class SwitchYardRemotingServlet extends HttpServlet {
         System.out.println("message content -> " + msg.getContent());
         
         ServiceDomain domain = _domainManager.getDomain(msg.getDomain());
-        ServiceReference service = domain.getServiceReference(msg.getService());
-        Exchange ex = service.createExchange();
-        Message m = ex.createMessage();
-        ex.getContext().setProperties(msg.getContext().getProperties());
-        m.setContent(msg.getContent());
-        ex.send(m);
+        ClassLoader loader = (ClassLoader) domain.getProperties().get(Deployment.CLASSLOADER_PROPERTY);
+        ClassLoader setTCCL = Classes.setTCCL(loader);
+        try {
+            ServiceReference service = domain.getServiceReference(msg.getService());
+            Exchange ex = service.createExchange();
+            Message m = ex.createMessage();
+            ex.getContext().setProperties(msg.getContext().getProperties());
+            m.setContent(msg.getContent());
+            ex.send(m);
+        } finally {
+            Classes.setTCCL(setTCCL);
+        }
     }
     
     public void setServiceDomainManager(ServiceDomainManager domainManager) {
