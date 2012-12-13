@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2 http://maven.apache.org/xsd/component-1.1.2.xsd"
+    xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <files>
+    <file>
+      <source>src/main/resources/external/jcraft/jsch/module.xml</source>
+      <outputDirectory>/modules/com/jcraft/jsch/main</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+  </files>
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>/modules/com/jcraft/jsch/main</outputDirectory>
+      <includes>
+        <include>com.jcraft:jsch</include>
+      </includes>
+      <outputFileNameMapping>${artifact.artifactId}-${version.jsch}.${artifact.extension}</outputFileNameMapping>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
+    </dependencySet>
+  </dependencySets>
+</component>

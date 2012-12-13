@@ -22,6 +22,16 @@
 
     <files>
         <file>
+            <source>src/main/resources/external/apache/commons/net</source>
+            <outputDirectory>/modules/org/apache/commons/net/main</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>src/main/resources/external/apache/commons/collections</source>
+            <outputDirectory>/modules/org/apache/commons/collections/main</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
             <source>src/main/resources/external/picketlink/module.xml</source>
             <outputDirectory>/modules/org/picketlink/main</outputDirectory>
             <filtered>true</filtered>
@@ -49,11 +59,6 @@
         <file>
             <source>src/main/resources/external/drools/module.xml</source>
             <outputDirectory>/modules/org/drools/main</outputDirectory>
-            <filtered>true</filtered>
-        </file>
-        <file>
-            <source>src/main/resources/external/antlr/antlr-runtime/module.xml</source>
-            <outputDirectory>/modules/org/antlr/antlr-runtime/main</outputDirectory>
             <filtered>true</filtered>
         </file>
         <file>
@@ -264,14 +269,6 @@
             <outputDirectory>/modules/org/drools/main</outputDirectory>
             <outputFileNameMapping>${artifact.artifactId}-${version.drools}.${artifact.extension}
             </outputFileNameMapping>
-        </dependencySet>
-        <dependencySet>
-            <useTransitiveDependencies>false</useTransitiveDependencies>
-            <includes>
-                <include>org.antlr:antlr-runtime</include>
-            </includes>
-            <outputDirectory>/modules/org/antlr/antlr-runtime/main</outputDirectory>
-            <outputFileNameMapping>${artifact.artifactId}-${version.antlr}.${artifact.extension}</outputFileNameMapping>
         </dependencySet>
         <dependencySet>
             <useTransitiveDependencies>false</useTransitiveDependencies>

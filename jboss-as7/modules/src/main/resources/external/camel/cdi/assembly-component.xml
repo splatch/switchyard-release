@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2 http://maven.apache.org/xsd/component-1.1.2.xsd"
+    xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <files>
+    <file>
+      <source>src/main/resources/external/camel/cdi/module.xml</source>
+      <outputDirectory>/modules/org/apache/camel/cdi/main</outputDirectory>
+      <filtered>true</filtered>
+    </file>
+  </files>
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>/modules/org/apache/camel/cdi/main</outputDirectory>
+      <includes>
+        <include>org.apache.camel:camel-cdi</include>
+      </includes>
+      <outputFileNameMapping>${artifact.artifactId}-${version.camel}.${artifact.extension}</outputFileNameMapping>
+      <useTransitiveDependencies>false</useTransitiveDependencies>
+    </dependencySet>
+  </dependencySets>
+</component>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.0" name="org.switchyard.component.camel.jpa">
+
+    <resources>
+        <resource-root path="switchyard-component-camel-jpa-${project.version}.jar"/>
+    </resources>
+
+    <dependencies>
+        <module name="javax.api"/>
+        <module name="org.switchyard.api"/>
+        <module name="org.switchyard.common"/>
+        <module name="org.switchyard.common-camel"/>
+        <module name="org.switchyard.config"/>
+        <module name="org.switchyard.deploy"/>
+        <module name="org.switchyard.jaxb-impl"/>
+        <module name="org.switchyard.api"/>
+        <module name="org.switchyard.common-camel"/>
+        <module name="org.switchyard.config"/>
+        <module name="org.apache.camel.core"/>
+        <module name="org.apache.camel.jpa" export="true" optional="true">
+            <imports>
+                <include path="META-INF/services/org/apache/camel/component"/>
+            </imports>
+            <exports>
+                <include path="META-INF/services/org/apache/camel/component"/>
+            </exports>
+        </module>
+        <module name="org.switchyard.component.camel.switchyard" services="import">
+            <imports>
+                <include path="**" />
+                <include path="META-INF/services/org/apache/camel/component"/>
+            </imports>
+            <exports>
+                <include path="**" />
+                <include path="META-INF/services/org/apache/camel/component"/>
+            </exports>
+        </module>
+        <module name="org.switchyard.component.common.camel">
+            <imports><include path="**" /><include path="META-INF/services"/></imports>
+            <exports><include path="**" /><include path="META-INF/services"/></exports>
+        </module>
+    </dependencies>
+</module>

@@ -30,6 +30,44 @@
 
     <dependencies>
         <module name="javax.api"/>
+        <module name="org.switchyard.api"/>
+        <module name="org.switchyard.common"/>
+        <module name="org.switchyard.common-camel"/>
+        <module name="org.switchyard.config"/>
+        <module name="org.switchyard.deploy"/>
+        <module name="org.switchyard.jaxb-impl"/>
+        <module name="org.switchyard.api"/>
+        <module name="org.switchyard.common-camel"/>
+        <module name="org.switchyard.config"/>
+        <module name="org.apache.camel.core">
+            <imports>
+                <include path="**" />
+            </imports>
+            <exports>
+                <include path="**" />
+            </exports>
+        </module>
+        <module name="org.switchyard.component.camel.switchyard" services="import">
+            <imports>
+                <include path="**" />
+            </imports>
+            <exports>
+                <include path="**" />
+            </exports>
+        </module>
+        <module name="org.switchyard.component.common.camel">
+            <imports>
+                <include path="**" />
+            </imports>
+            <exports>
+                <include path="**" />
+            </exports>
+        </module>
+    </dependencies>
+
+    <!--
+    <dependencies>
+        <module name="javax.api"/>
         <module name="javax.enterprise.api"/>
         <module name="javax.ws.rs.api"/>
         <module name="org.apache.log4j"/>
@@ -127,4 +165,5 @@
         <module name="org.switchyard.component.common.rest"/>
         <module name="org.springframework" />
     </dependencies>
+    -->
 </module>
