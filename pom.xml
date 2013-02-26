@@ -39,6 +39,7 @@
         <module>testutil</module>
         <module>distribution</module>
         <module>jboss-as7</module>
+        <module>karaf</module>
         <module>tools/dist</module>
         <module>tools/forge</module>
         <module>tools/forge-installer</module>
